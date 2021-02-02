@@ -1,0 +1,19 @@
+/* ----- Contents of this file: -----
+ *  |basic layout| 
+ *  |colors and typography| 
+ */
+
+/* Avoids counter-intuitive box size changes as per 
+   https://css-tricks.com/box-sizing/ */
+
+html {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+
+/*  |basic layout| */
