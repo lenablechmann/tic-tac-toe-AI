@@ -7,13 +7,18 @@
 
     <!-- Add responsiveness -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Book Tracker</title>
+    <title>AI Tic Tac Toe</title>
 
     <!-- css styles -->
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/style.css">
 
     <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet"> 
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran&display=swap" rel="stylesheet"> 
 
     <!--javascript-->
     <script src="scripts/script.js"></script>
@@ -21,9 +26,24 @@
 
 <body>
     <!-- flexbox will be used to create the overall column look of 
-         the site, while grid will be used on individual card layouts-->
-    <header>
+         the site, while grid will be used on the gameboard layout -->
+    <header class="game-title"> 
+        Minimax AI <br>
+        Tic Tac Toe
     </header>
+    <div class="score-message" id="message">It's a tie!</div>
+    <div class="gameboard-container" id="gameboard">
+        <div class="gameboard-cell empty" id="one">O</div>
+        <div class="gameboard-cell empty" id="two">X</div>
+        <div class="gameboard-cell empty" id="three">O</div>
+        <div class="gameboard-cell empty" id="four">O</div>
+        <div class="gameboard-cell empty" id="five">X</div>
+        <div class="gameboard-cell empty" id="six">O</div>
+        <div class="gameboard-cell empty" id="seven">X</div>
+        <div class="gameboard-cell empty" id="eight">X</div>
+        <div class="gameboard-cell empty" id="nine">O</div>
+    </div>
+    <button class="restart-btn" id="restart">Restart</button>
 </body>
 
 </html>

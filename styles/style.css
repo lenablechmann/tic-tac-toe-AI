@@ -17,3 +17,77 @@ html {
 
 
 /*  |basic layout| */
+
+body {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+    .game-title {
+        border: solid 2px blue;
+    }
+
+    .score-message {
+        border: solid 2px red;
+    }
+
+    .gameboard-container {
+        display: grid;
+        grid-template-areas: "cell1 cell2 cell3"
+                             "cell4 cell5 cell6"
+                             "cell7 cell8 cell9"
+         ;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        height: 400px;
+        width: 400px;
+        border: solid 2px green;
+    }
+        div#one.gameboard-cell {
+            grid-area: cell1;
+            border: solid 2px rgb(255, 255, 70);
+        }
+        div#two.gameboard-cell {
+            grid-area: cell2;
+            border: solid 2px rgb(155, 155, 14);
+        }
+        div#three.gameboard-cell {
+            grid-area: cell3;
+            border: solid 2px rgb(128, 255, 55);
+        }
+        div#four.gameboard-cell {
+            grid-area: cell4;
+            border: solid 2px rgb(31, 173, 12);
+        }
+        div#five.gameboard-cell {
+            grid-area: cell5;
+            border: solid 2px rgb(22, 134, 7);
+        }
+        div#six.gameboard-cell {
+            grid-area: cell6;
+            border: solid 2px rgb(12, 173, 98);
+        }
+        div#seven.gameboard-cell {
+            grid-area: cell7;
+            border: solid 2px rgb(12, 122, 173);
+        }
+        div#eight.gameboard-cell {
+            grid-area: cell8;
+            border: solid 2px rgb(4, 41, 99);
+        }
+        div#nine.gameboard-cell {
+            grid-area: cell9;
+            border: solid 2px rgb(165, 20, 223);
+        }
+    .restart-btn {
+        border: solid 2px slateblue;
+    }
+
+/*  |colors and typography|  */
+body {
+    font-family: 'Catamaran', Tahoma, sans-serif;
+}
+
+header {
+    font-family: 'Kaushan Script', cursive;
+}
