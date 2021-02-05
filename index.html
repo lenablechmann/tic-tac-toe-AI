@@ -32,17 +32,41 @@
         Tic Tac Toe
     </header>
     <div class="score-message" id="message">It's a tie!</div>
-    <div class="gameboard-container" id="gameboard">
-        <div class="gameboard-cell empty" id="one">O</div>
-        <div class="gameboard-cell empty" id="two">X</div>
-        <div class="gameboard-cell empty" id="three">O</div>
-        <div class="gameboard-cell empty" id="four">O</div>
-        <div class="gameboard-cell empty" id="five">X</div>
-        <div class="gameboard-cell empty" id="six">O</div>
-        <div class="gameboard-cell empty" id="seven">X</div>
-        <div class="gameboard-cell empty" id="eight">X</div>
-        <div class="gameboard-cell empty" id="nine">O</div>
-    </div>
+    <table class="game-container">
+        <tr class="game-row">
+            <td class="cell">
+                <div class="cell-content" id="00">X</div>
+            </td>
+            <td class="cell">
+                <div class="cell-content" id="01">O</div>
+            </td>
+            <td class="cell">
+                <div class="cell-content" id="02"></div>
+            </td>
+        </tr>
+        <tr class="game-row">
+            <td class="cell">
+                <div class="cell-content" id="10"></div>
+            </td>
+            <td class="cell">
+                <div class="cell-content" id="11">X</div>
+            </td>
+            <td class="cell">
+                <div class="cell-content" id="12">O</div>
+            </td>
+        </tr>
+        <tr class="game-row">
+            <td class="cell">
+                <div class="cell-content" id="20"></div>
+            </td>
+            <td class="cell">
+                <div class="cell-content" id="21"></div>
+            </td>
+            <td class="cell">
+                <div class="cell-content" id="22"></div>
+            </td>
+        </tr>
+    </table>
     <button class="restart-btn" id="restart">Restart</button>
 </body>
 
