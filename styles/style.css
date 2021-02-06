@@ -31,32 +31,19 @@ body {
     .score-message {
         margin: 1em 0 1.2em 0;
     }
-
-    table {
-        width: 300px;
-        border-spacing: 5px;
-    }
-        tr {
-            display: flex;
-            align-items: center;
-            justify-items: center;
-        }
-            td {
-                width:33.3%;
-                height: 33.3%;
-                display:flex;
-                align-self: center;
-                align-items: center;
-                justify-content: center;
-            }
-            td:after{
-                content:'';
-                margin-top:100%;
-            }
-            .cell-content {
-                position:absolute;
-                margin: auto auto;
-            }
+    .gameboard-container {
+        width:300px;
+        height:300px;
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        background-color: #113A5D;
+      }
+      
+      .cell {
+          padding: 10px;
+          background-color: #F9F9F9;
+      }
 
     .restart-btn {
         margin: 1em 0 1em 0;
@@ -76,26 +63,7 @@ header {
     color: #FF7A8A;
 }
 
+
 .score-message {
     font-size: 1.5rem;
-}
-
-table {
-    background-color: #113A5D;
-    border: none;
-    border-radius: 10px;
-}
-    td {
-        background-color: #F9F9F9;
-        border: solid 5px #113A5D;
-        border-radius: 5px;
-    }
-
-.restart-btn {
-    font-family: 'Catamaran', Tahoma, sans-serif;
-    color: #F9F9F9;
-    font-size: 1.5rem;
-    background-color: #113A5D;
-    border-radius: 10px;
-    border: none;
 }
