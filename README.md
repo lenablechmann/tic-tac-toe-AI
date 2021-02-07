@@ -15,7 +15,7 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - [x] create a wireframe for the interface
 - [x] create a figma layout for mobile (desktop will be a variation of it): ![Figma mobile layout](images/figmaLayout.png)
 - [ ] plan out the web app with a flowchart and determine which classes/ids, objects, functions and modules (what they will reveal) you'll approximately need
-- [ ] create the html+css static layout
+- [x] create the html+css static layout
 - [ ] write a javascript base game where player 1 is the user, and player 2 chooses random cells for its moves (player 2 will be a bot)
 - [ ] write out the winning logic condition
 - [ ] display winner and ideally show what the winning row/diagonal is
