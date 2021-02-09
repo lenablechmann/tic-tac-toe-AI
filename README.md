@@ -31,6 +31,7 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - understand and implement the minimax algorithm in a project (which is the foundation of game theory and AI)
 - learn about basic graphs in programming and some concepts how to traverse them
 - use emmet shortcuts to speed up your HTML composing
+- add unit tests with the jest framework to make the code more maintainable and avoid constant manual testing
 
 ## Unexpected Difficulties/Learning Experiences
 - minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses
