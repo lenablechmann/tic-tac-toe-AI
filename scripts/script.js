@@ -1,9 +1,17 @@
 // adding this check, so that the script tag can stay at the start of HTML
 document.addEventListener("DOMContentLoaded", function () {
     // create gameboard object, store the gameboard array inside of it (3x3)
-        // define initial state (empty board) perhaps with an array
-        // current board should be a public property but not directly editable from outside?
-        // empty cells should also be a public property
+    const gameboard = {
+        array: [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+        ]
+    };
+    // testing accessing the array values, shows how to change em when necessary
+    console.log(gameboard.array[0][0]);
+    console.log(gameboard.array[0][2]);
+    console.log(gameboard.array[2][1]);
 
     // factory for player objects
         // which sign (property)
@@ -24,12 +32,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // a module that manages the display (display controller)
         // accesses public methods and properties exposed by other modules
         // uses the info to modify the DOM accordingly
+        // displays current state that it gets from the gameboard obj
+        // listens to clicks from users on the grid divs, checks if div
+        // is empty or full. if empty and users turn
 
         // checks board and updates the display to represent current state
         // cells that aren't empty, don't call any functions
         // add a small sleep timer before displaying the AI turn
         // displays winning message if game over
         // optional: displays winning diagonal/row
-
-
 });
