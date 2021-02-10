@@ -12,13 +12,23 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(gameboard.array[0][0]);
     console.log(gameboard.array[0][2]);
     console.log(gameboard.array[2][1]);
-
+    
     // factory for player objects
+    function Player (sign, type) {
+
         // which sign (property)
         // turn (boolean)
         // human or ai (boolean)
-    
-    // an object to keep track of the gameplay/gameflow as well
+        this.turn = function () {
+            console.log("my turn");
+        };
+
+        return {sign, turn, type};
+    };
+
+
+    // an iife module to keep track of the gameplay/gameflow as well
+    const gameflow = (function () {
         // public method that evaluates state of the board (for minimax)
         // public method that says if game over or nah
         // public property whose turn
@@ -28,8 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // result func returns state after that action was taken
         // terminal function checks wether game is over (3 in a row or board full)
         // utility function gives the state a value (1 for x winning, -1 o is winning or draw)
+        return {};
+    }
+    )();
 
     // a module that manages the display (display controller)
+    const displayController = (function () {
         // accesses public methods and properties exposed by other modules
         // uses the info to modify the DOM accordingly
         // displays current state that it gets from the gameboard obj
@@ -41,4 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // add a small sleep timer before displaying the AI turn
         // displays winning message if game over
         // optional: displays winning diagonal/row
+        return {};
+    }
+    )();
 });
