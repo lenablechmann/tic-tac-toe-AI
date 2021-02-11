@@ -3,29 +3,57 @@ document.addEventListener("DOMContentLoaded", function () {
     // create gameboard object, store the gameboard array inside of it (3x3)
     const gameboard = {
         array: [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
+            ['', 'X', ''],
+            ['', '', 'O'],
+            ['', 'X', ''],
         ]
     };
     // testing accessing the array values, shows how to change em when necessary
-    console.log(gameboard.array[0][0]);
-    console.log(gameboard.array[0][2]);
-    console.log(gameboard.array[2][1]);
+    // console.log(gameboard.array[1][2]); // logs "O" 
+
     
-    // factory for player objects
-    function Player (sign, type) {
+    // factory for player objects 
+    // receives boolean (isHuman? true or false), returns player properties
+    function createPlayer (isHuman) {
+        let type = true;
+        // x goes first, so human goes first to have a chance at a tie
+        let sign = 'X'; 
 
-        // which sign (property)
-        // turn (boolean)
-        // human or ai (boolean)
-        this.turn = function () {
-            console.log("my turn");
-        };
-
-        return {sign, turn, type};
+        if (!isHuman) {
+            // AI isn't human, and will go second with the oh
+            type = false;
+            sign = 'O'; 
+        }
+        return {sign, type};
     };
 
+    // a module that manages the display (display controller)
+    const displayController = (function () {
+        const gameCells = document.querySelectorAll(".cell-content");
+
+        // loops over the .cell-content divs and gives them textContent of
+        // the gameboard
+        gameCells.forEach(gameCell => {
+            // every cell-content id corresponds to the array position, just gotta 
+            // split it
+            console.log(`game cell id is ${gameCell.id}`)
+            const splitCellId = gameCell.id.split("");
+            console.log (`content of the board here is: ${gameboard.array[splitCellId[0]][splitCellId[1]]}`);
+        });
+        // if textcontent is '', change their parent div class to "cell empty"
+
+        // listens to clicks from users on the grid divs, checks if div
+        // is empty or full. if empty and users turn
+        //  changes the array cell content and sets the parent class to "cell"
+
+        // checks board and updates the display to represent current state
+        // cells that aren't empty, don't call any functions
+        // add a small sleep timer before displaying the AI turn
+        // displays winning message if game over
+        // optional: displays winning diagonal/row
+        return {};
+    }
+    )();
 
     // an iife module to keep track of the gameplay/gameflow as well
     const gameflow = (function () {
@@ -42,20 +70,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     )();
 
-    // a module that manages the display (display controller)
-    const displayController = (function () {
-        // accesses public methods and properties exposed by other modules
-        // uses the info to modify the DOM accordingly
-        // displays current state that it gets from the gameboard obj
-        // listens to clicks from users on the grid divs, checks if div
-        // is empty or full. if empty and users turn
-
-        // checks board and updates the display to represent current state
-        // cells that aren't empty, don't call any functions
-        // add a small sleep timer before displaying the AI turn
-        // displays winning message if game over
-        // optional: displays winning diagonal/row
-        return {};
-    }
-    )();
 });
