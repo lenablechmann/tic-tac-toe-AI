@@ -31,14 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const displayController = (function () {
         const gameCells = document.querySelectorAll(".cell-content");
 
-        // loops over the .cell-content divs and gives them textContent of
-        // the gameboard
+        // displaying the content of the appropriate array cell in the DOM
         gameCells.forEach(gameCell => {
-            // every cell-content id corresponds to the array position, just gotta 
-            // split it
-            console.log(`game cell id is ${gameCell.id}`)
-            const splitCellId = gameCell.id.split("");
-            console.log (`content of the board here is: ${gameboard.array[splitCellId[0]][splitCellId[1]]}`);
+            // every cell-content id corresponds to the array position 
+            gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
+            if (gameCell.textContent !== '') {
+                gameCell.parentNode.className = 'cell';
+            }
         });
         // if textcontent is '', change their parent div class to "cell empty"
 
