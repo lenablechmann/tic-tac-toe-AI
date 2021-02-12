@@ -104,6 +104,7 @@ header {
     background-color: #ece8e6;
 }
 .empty:hover {
+    cursor: pointer;
     background-color: #ece8e6;
 }
 .restart-btn:hover {

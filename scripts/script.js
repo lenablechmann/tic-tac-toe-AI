@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type = false;
             sign = 'O'; 
         }
+        // add a method that checks if it's their turn?
         return {sign, type};
     };
 
@@ -35,18 +36,27 @@ document.addEventListener("DOMContentLoaded", function () {
         gameCells.forEach(gameCell => {
             // every cell-content id corresponds to the array position 
             gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
+
+            // change class if cell isn't empty so that it doesn't change on hover
             if (gameCell.textContent !== '') {
                 gameCell.parentNode.className = 'cell';
             }
         });
-        // if textcontent is '', change their parent div class to "cell empty"
 
         // listens to clicks from users on the grid divs, checks if div
         // is empty or full. if empty and users turn
-        //  changes the array cell content and sets the parent class to "cell"
+        gameCells.forEach(gameCell => {
+            gameCell.addEventListener('click', () => {
+            if (gameCell.textContent === '') {
+                // TODO
+                // check if it's user's turn via a player method
+                // if it is, change textContent of the cell to X
+                // change gameboard array to X in that place
+                console.log("wow you clicked on an empty cell, gj.");
+            }
+            });
+        });
 
-        // checks board and updates the display to represent current state
-        // cells that aren't empty, don't call any functions
         // add a small sleep timer before displaying the AI turn
         // displays winning message if game over
         // optional: displays winning diagonal/row
