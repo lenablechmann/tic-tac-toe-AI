@@ -79,9 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         function sayWhoseTurn (gameArray) {
-            // TODO add unit test for this public method, feed it different arrays and see what it returns
             // Input: current state, output: whose turn it is (1 for human, 0 for ai)
-
             let xCounter = 0;
             let oCounter = 0;
             let emptyCounter = 0;
@@ -129,3 +127,4 @@ document.addEventListener("DOMContentLoaded", function () {
     )();
 
 });
+
