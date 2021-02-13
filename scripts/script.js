@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                 }
                     console.table(gameboard.array);
-                    gameflow.listAllActions(gameboard.array);
+                    console.log(gameflow.listAllActions(gameboard.array));
 
             }
             });
