@@ -21,18 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
             type = false;
             sign = 'O'; 
         }
-        this.setTurn = function setTurn (){
-            // flips turn
-            turn = !turn;
-            return turn;
-        }
 
-        this.isTurn = function isTurn (){
-            return turn;
-        }
-
-        // TODO add a method that checks if it's their turn?
-        return {sign, type, setTurn, isTurn};
+        return {sign, type};
     };
 
     // a module that manages the display (display controller)
@@ -56,13 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
             gameCell.addEventListener('click', () => {
             if (gameCell.textContent === '') {
                 // human is 1, ai is 0
-                if (gameflow.sayWhoseTurn()) {
+                if (gameflow.sayWhoseTurn(gameboard.array)) {
                     // change gameboard array and the div content to X
-                    gameCell.textContent === 'X'
                     gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = 'X';
-                    // switch turns
-                    gameflow.player1.setTurn()
-                    gameflow.player2.setTurn()
+                    gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
                 }
             }
             });
@@ -91,14 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
             // checks wether game is over (3 in a row or board full)
         };
 
-        function sayWhoseTurn () {
-            // create a playerFunction. Input: current state, output: whose turn it is (1 for human, 0 for ai)
-            // (for example empty board: x's turn, otherwise if there is more x than o, then o's turn, and the other way around)
+        function sayWhoseTurn (gameArray) {
+            // TODO add unit test for this public method, feed it different arrays and see what it returns
+            // Input: current state, output: whose turn it is (1 for human, 0 for ai)
+
             let xCounter = 0;
             let oCounter = 0;
             let emptyCounter = 0;
             // loop over the 2d array and count how many Os, Xs and empties
-            for (let row of gameboard.array) {
+            for (let row of gameArray) {
                 for (let column of row) {
                     switch (column) {
                         case 'X':
@@ -115,15 +103,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             if (xCounter === 0 && oCounter === 0) {
-                console.log("human's turn");
+                console.log(`There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`);
                 return 1;
             }
             else if ( xCounter > oCounter) {
-                console.log("ai's turn");
+                console.log(`There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`);
                 return 0;
             }
             else {
-                console.log("human's turn");
+                console.log(`There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`);
                 return 1;
             }
         };
