@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const gameboard = {
         array: [
             ['', '', ''],
-            ['', '', ''],
+            ['O', 'X', ''],
             ['', '', ''],
         ]
     };
@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let type = true;
         // x goes first, so human goes first to have a chance at a tie
         let sign = 'X'; 
-        let turn = false;
 
         if (!isHuman) {
             type = false;
@@ -48,9 +47,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 // human is 1, ai is 0
                 if (gameflow.sayWhoseTurn(gameboard.array)) {
                     // change gameboard array and the div content to X
-                    gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = 'X';
-                    gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
+                    gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
+                    gameCell.textContent = gameflow.player1.sign;
+                    gameCell.parentNode.className = 'cell';
+                    
                 }
+                    console.table(gameboard.array);
+                    gameflow.listAllActions(gameboard.array);
+
             }
             });
         });
@@ -82,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // Input: current state, output: whose turn it is (1 for human, 0 for ai)
             let xCounter = 0;
             let oCounter = 0;
-            let emptyCounter = 0;
             // loop over the 2d array and count how many Os, Xs and empties
             for (let row of gameArray) {
                 for (let column of row) {
@@ -94,35 +97,47 @@ document.addEventListener("DOMContentLoaded", function () {
                            oCounter++; 
                             break;
                         default:
-                            emptyCounter++;
                             break;
                     }
                 }
             }
             
             if (xCounter === 0 && oCounter === 0) {
-                console.log(`There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`);
                 return 1;
             }
             else if ( xCounter > oCounter) {
-                console.log(`There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`);
                 return 0;
             }
             else {
-                console.log(`There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`);
                 return 1;
             }
         };
 
-        function listAllActions () {
-            // function that returns possible actions from the current state (all empty cells are valid move possibilities)
+        function listAllActions (gameArray) {
+            // returns an array of empty cell ids 
+            let actionsArray = [];
+            for (let row = 0; row < gameArray.length; row++) {
+                // since arrays in js are objects and not memory cells in a row
+                // col amount should be determined via inner array length
+                for (let col = 0; col < gameArray[row].length; col++) {
+                    if (gameArray[row][col] === '') {
+                        actionsArray.push(`${row}${col}`);
+                    }
+                }
+            }
+            return actionsArray;
         };
 
         function resultOfAction () {
             // result func returns state after that action was taken
         }
 
-        return {player1, player2, evaluateState, checkGameOver, sayWhoseTurn, listAllActions, resultOfAction};
+        function randomMove () {
+            //placeholder function before minimax implementation
+            gameflow.listAllActions(gameboard.array);
+        }
+
+        return {player1, player2, evaluateState, checkGameOver, sayWhoseTurn, listAllActions, resultOfAction, randomMove};
     }
     )();
 

@@ -47,7 +47,6 @@ test("Should accept any 2D array", () => {
 function sayWhoseTurn(gameArray) {
   let xCounter = 0;
   let oCounter = 0;
-  let emptyCounter = 0;
   // loop over the 2d array and count how many Os, Xs and empties
   for (let row of gameArray) {
     for (let column of row) {
@@ -59,26 +58,16 @@ function sayWhoseTurn(gameArray) {
           oCounter++;
           break;
         default:
-          emptyCounter++;
           break;
       }
     }
   }
 
   if (xCounter === 0 && oCounter === 0) {
-    console.log(
-      `There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`
-    );
     return 1;
   } else if (xCounter > oCounter) {
-    console.log(
-      `There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`
-    );
     return 0;
   } else {
-    console.log(
-      `There is ${xCounter} X-s, ${oCounter} O-s and ${emptyCounter} empties.`
-    );
     return 1;
   }
 }
