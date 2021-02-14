@@ -29,14 +29,13 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - practice debugging in developer tools
 - make the user experience as fluid and as simple as possible
 - understand and implement the minimax algorithm in a project (which is the foundation of game theory and AI)
-- learn about basic graphs in programming and some concepts how to traverse them
 - use emmet shortcuts to speed up your HTML composing
-- add unit tests with the jest framework to make the code more maintainable and avoid constant guesswork upon bugs
+- add unit tests with the jest framework to make the code more maintainable and avoid constant guesswork whenever bugs creep up
+- apply basic TDD (test driven development) concepts
 
 ## Unexpected Difficulties/Learning Experiences
 - minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses
 - implementing game states in code was also not trivial
-- jest testing builds upon exporting of JS modules, which I will be learning later on, which means my tests are more manual than I'd like
-
+- jest testing builds upon exporting of JS modules, which clashes with the revealing module pattern. Atm I will prioritize using the module pattern, and manually export the functions into test files, since my goal with this project is to learn the revearing module pattern.
 
 
