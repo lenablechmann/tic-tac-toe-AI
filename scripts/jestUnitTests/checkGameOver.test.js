@@ -1,6 +1,6 @@
 const { test } = require("@jest/globals");
 
-xtest("Should return falsy boolean for game over + empty array if still empty cells present and no winner", () => {
+test("Should return falsy boolean for game over + empty array if still empty cells present and no winner", () => {
   const input = [
       ['X', 'O', 'X'],
       ['O', 'O', 'X'],
@@ -14,7 +14,7 @@ xtest("Should return falsy boolean for game over + empty array if still empty ce
   expect(checkGameOver(input)).toEqual(result);
 });
 
-xtest("Should return truthy boolean for game over + empty array for a draw, no winner", () => {
+test("Should return truthy boolean for game over + empty array for a draw, no winner", () => {
   const input = [
       ['O', 'X', 'X'],
       ['X', 'O', 'O'],
@@ -28,7 +28,7 @@ xtest("Should return truthy boolean for game over + empty array for a draw, no w
   expect(checkGameOver(input)).toEqual(result);
 });
 
-xtest("Should return truthy boolean for game over + winning ids, winner is O", () => {
+test("O winning with a row should return game over, ids and O as winnter", () => {
   const input = [
       ['', '', 'X'],
       ['O', 'O', 'O'],
@@ -42,10 +42,10 @@ xtest("Should return truthy boolean for game over + winning ids, winner is O", (
   expect(checkGameOver(input)).toEqual(result);
 });
 
-xtest("Should return truthy boolean for game over + winning ids, winner is X", () => {
+test("X winning with a row, returns game over + winning ids", () => {
   const input = [
       ['O', 'O', 'X'],
-      ['O', 'X', 'O'],
+      ['X', 'O', 'O'],
       ['X', 'X', 'X'],
   ];
   const result = {
@@ -56,7 +56,7 @@ xtest("Should return truthy boolean for game over + winning ids, winner is X", (
   expect(checkGameOver(input)).toEqual(result);
 });
 
-xtest("Should return truthy boolean for game over + winning ids of column, winner is X", () => {
+test("Should return truthy boolean for game over + winning ids of column, winner is X", () => {
   const input = [
       ['', 'X', 'X'],
       ['O', 'O', 'X'],
@@ -70,7 +70,7 @@ xtest("Should return truthy boolean for game over + winning ids of column, winne
   expect(checkGameOver(input)).toEqual(result);
 });
 
-xtest("Should return truthy boolean for game over + winning ids of column, winner is O", () => {
+test("Should return truthy boolean for game over + winning ids of column, winner is O", () => {
   const input = [
       ['', 'O', 'X'],
       ['X', 'O', 'O'],
@@ -84,7 +84,7 @@ xtest("Should return truthy boolean for game over + winning ids of column, winne
   expect(checkGameOver(input)).toEqual(result);
 });
 
-xtest("Should return truthy boolean for game over + winning ids if it's a winning diagonal", () => {
+test("Should return truthy boolean for game over + winning ids of the winning diagonal", () => {
   const input = [
       ['O', 'X', 'X'],
       ['O', 'O', 'X'],
@@ -93,11 +93,11 @@ xtest("Should return truthy boolean for game over + winning ids if it's a winnin
   const result = {
       gameOver: true,
       winningIds: ['00', '11', '22'],
-      winner: 'X'
+      winner: 'O'
   };
   expect(checkGameOver(input)).toEqual(result);
 });
-xtest("Should return truthy boolean for game over + winning ids if it's another winning diagonal", () => {
+test("Should return truthy boolean for game over + winning ids if it's another winning diagonal", () => {
   const input = [
       ['O', 'O', 'X'],
       ['O', 'X', 'X'],
@@ -106,6 +106,22 @@ xtest("Should return truthy boolean for game over + winning ids if it's another 
   const result = {
       gameOver: true,
       winningIds: ['02', '11', '20'],
+      winner: 'X'
+  };
+  expect(checkGameOver(input)).toEqual(result);
+});
+
+test("Should work with differently sized arrays, like 5x5", () => {
+  const input = [
+      ['O', '', 'X', '', ''],
+      ['O', 'O', 'O', '', ''],
+      ['X', 'X', 'X', 'X', 'X'],
+      ['', '', 'O', 'O', 'X'],
+      ['', '', 'O', 'X', 'O'],
+  ];
+  const result = {
+      gameOver: true,
+      winningIds: ['20', '21', '22', '23', '24'],
       winner: 'X'
   };
   expect(checkGameOver(input)).toEqual(result);
@@ -151,10 +167,10 @@ function checkGameOver (gameArray) {
     }
     // sums rows
     const rowSum = digitsArray.map(r => r.reduce((a, b) => a + b));
-    // console.log(`The sum of rows is ${rowSum}`)
+    console.log(`The sum of rows is ${rowSum}`)
     // loops through the new array, and finds any winning row
     for (let i = 0; i < rowSum.length; i++) {
-        if (rowSum[i] === 0) {
+        if (!rowSum[i]) {
             winningSummary.winner = 'O';
             winningSummary.gameOver = true;
             // the index of rowSum is the corresponding row in the gameBoard
@@ -163,7 +179,6 @@ function checkGameOver (gameArray) {
                 let winnerId = `${i}${j}`;
                 winningSummary.winningIds.push(winnerId);
             }
-            break;
         }
         else if (rowSum[i] === digitsArray.length) {
             winningSummary.winner = 'X';
@@ -174,7 +189,6 @@ function checkGameOver (gameArray) {
                 let winnerId = `${i}${j}`;
                 winningSummary.winningIds.push(winnerId);
             }
-            break;
         }
     }
 
@@ -182,7 +196,7 @@ function checkGameOver (gameArray) {
     const colSum = digitsArray.reduce((a, b) => a.map((x, i) => x + b[i]));
     // console.log(`The sum of columns is ${colSum}`)
     for (let i = 0; i < colSum.length; i++) {
-        if (colSum[i] === 0) {
+        if (!colSum[i]) {
             winningSummary.winner = 'O';
             winningSummary.gameOver = true;
             // same as with rows but row and column will be switched, since i is now the column index
@@ -212,7 +226,48 @@ function checkGameOver (gameArray) {
         sumDiagonals.main += digitsArray[i][i];
         sumDiagonals.second += digitsArray[i][digitsArray.length-i-1];
     }
-    // console.log(`The sum of diagonal1 is ${sumDiagonals.main}`)
-    // console.log(`The sum of diagonal2 is ${sumDiagonals.second}`)
+    // winning main diagonal
+    if (!sumDiagonals.main) {
+        // all zeroes, O wins
+        winningSummary.winner = 'O';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${i}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+    else if (sumDiagonals.main === digitsArray.length) {
+        // all ones, X wins
+        winningSummary.winner = 'X';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${i}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+    // winning second diagonal
+    if (!sumDiagonals.second) {
+        // all zeroes, O wins
+        winningSummary.winner = 'O';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${digitsArray.length - i - 1}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+    else if (sumDiagonals.second === digitsArray.length) {
+        // all ones, X wins
+        winningSummary.winner = 'X';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${digitsArray.length - i - 1}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+
     return winningSummary;
 }

@@ -77,10 +77,149 @@ document.addEventListener("DOMContentLoaded", function () {
             // utility function gives the state a value (1 for x winning, -1 o is winning or draw)
         };
 
-        function checkGameOver() {
-            // public method that says if game over or nah
-            // checks wether game is over (3 in a row or board full)
-        };
+function checkGameOver (gameArray) {
+    // create winningSummary object with gameOver and winningIds properties
+    let winningSummary = {
+      gameOver: false,
+      winningIds: [],
+      winner: ''
+    }
+
+    // make a copy of gameArray where all X are 1s and all Os are zeros, empties are 5000, while counting empties
+    let digitsArray = gameArray.map(inner => inner.slice())
+
+    let emptiesCounter = 0;
+
+    for (let row = 0; row < digitsArray.length; row++) {
+        for (let col = 0; col < digitsArray[row].length; col++) {
+            if (gameArray[row][col] === '') {
+                emptiesCounter++;
+                digitsArray[row][col] = 5000;
+            }
+            else if (gameArray[row][col] === 'X') {
+                digitsArray[row][col] = 1;
+            }
+            else if (gameArray[row][col] === 'O') {
+                digitsArray[row][col] = 0;
+            }
+            else {
+                console.log("unexpected symbol in the array")
+            }
+        }
+    }
+    // console.dir(digitsArray);
+    // console.log("There are " + emptiesCounter + " empty cells.");
+    if (!emptiesCounter) {
+        // if the gameboard is full, game is over
+        winningSummary.gameOver = true;
+    }
+    // sums rows
+    const rowSum = digitsArray.map(r => r.reduce((a, b) => a + b));
+    console.log(`The sum of rows is ${rowSum}`)
+    // loops through the new array, and finds any winning row
+    for (let i = 0; i < rowSum.length; i++) {
+        if (!rowSum[i]) {
+            winningSummary.winner = 'O';
+            winningSummary.gameOver = true;
+            // the index of rowSum is the corresponding row in the gameBoard
+            // meaning the ids will be 'i' and all numbers from 0 to array.length
+            for (let j = 0; j < digitsArray.length; j++) {
+                let winnerId = `${i}${j}`;
+                winningSummary.winningIds.push(winnerId);
+            }
+        }
+        else if (rowSum[i] === digitsArray.length) {
+            winningSummary.winner = 'X';
+            winningSummary.gameOver = true;
+            // the index of rowSum is the corresponding row in the gameBoard
+            // meaning the ids will be 'i' and all numbers from 0 to array.length
+            for (let j = 0; j < digitsArray.length; j++) {
+                let winnerId = `${i}${j}`;
+                winningSummary.winningIds.push(winnerId);
+            }
+        }
+    }
+
+    // sums of columns
+    const colSum = digitsArray.reduce((a, b) => a.map((x, i) => x + b[i]));
+    // console.log(`The sum of columns is ${colSum}`)
+    for (let i = 0; i < colSum.length; i++) {
+        if (!colSum[i]) {
+            winningSummary.winner = 'O';
+            winningSummary.gameOver = true;
+            // same as with rows but row and column will be switched, since i is now the column index
+            for (let j = 0; j < digitsArray.length; j++) {
+                let winnerId = `${j}${i}`;
+                winningSummary.winningIds.push(winnerId);
+            }
+            break;
+        }
+        else if (colSum[i] === digitsArray.length) {
+            winningSummary.winner = 'X';
+            winningSummary.gameOver = true;
+            // the index of rowSum is the corresponding row in the gameBoard
+            // meaning the ids will be 'i' and all numbers from 0 to array.length
+            for (let j = 0; j < digitsArray.length; j++) {
+                let winnerId = `${j}${i}`;
+                winningSummary.winningIds.push(winnerId);
+            }
+            break;
+        }
+    }
+
+
+    //sum of diagonals
+    const sumDiagonals = {main: 0, second: 0};
+    for (let i = 0; i < digitsArray.length; i++) {
+        sumDiagonals.main += digitsArray[i][i];
+        sumDiagonals.second += digitsArray[i][digitsArray.length-i-1];
+    }
+    // winning main diagonal
+    if (!sumDiagonals.main) {
+        // all zeroes, O wins
+        winningSummary.winner = 'O';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${i}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+    else if (sumDiagonals.main === digitsArray.length) {
+        // all ones, X wins
+        winningSummary.winner = 'X';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${i}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+    // winning second diagonal
+    if (!sumDiagonals.second) {
+        // all zeroes, O wins
+        winningSummary.winner = 'O';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${digitsArray.length - i - 1}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+    else if (sumDiagonals.second === digitsArray.length) {
+        // all ones, X wins
+        winningSummary.winner = 'X';
+        winningSummary.gameOver = true;
+        // create a list of ids
+        for (let i = 0; i < digitsArray.length; i++) {
+            let winnerId = `${i}${digitsArray.length - i - 1}`;
+            winningSummary.winningIds.push(winnerId);
+        }
+    }
+
+    return winningSummary;
+}
+
 
         function sayWhoseTurn (gameArray) {
             // Input: current state, output: whose turn it is (1 for human, 0 for ai)
