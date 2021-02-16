@@ -24,48 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return {sign, type};
     };
 
-    // a module that manages the display (display controller)
-    const displayController = (function () {
-
-        // displaying the content of the appropriate array cell in the DOM
-        const gameCells = document.querySelectorAll(".cell-content");
-        gameCells.forEach(gameCell => {
-            // every cell-content id corresponds to the array position 
-            gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
-
-            // change class if cell isn't empty so that it doesn't change on hover
-            if (gameCell.textContent !== '') {
-                gameCell.parentNode.className = 'cell';
-            }
-        });
-
-        // listens to clicks from users on the grid divs, checks if div
-        // is empty or full. if empty and users turn
-        gameCells.forEach(gameCell => {
-            gameCell.addEventListener('click', () => {
-            if (gameCell.textContent === '') {
-                // human is 1, ai is 0
-                if (gameflow.sayWhoseTurn(gameboard.array)) {
-                    // change gameboard array and the div content to X
-                    gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
-                    gameCell.textContent = gameflow.player1.sign;
-                    gameCell.parentNode.className = 'cell';
-                    
-                }
-                    console.table(gameboard.array);
-                    console.log(gameflow.listAllActions(gameboard.array));
-
-            }
-            });
-        });
-
-        // add a small sleep timer before displaying the AI turn
-        // displays winning message if game over
-        // optional: displays winning diagonal/row
-        return {};
-    }
-    )();
-
     // an iife module to keep track of the gameplay/gameflow as well
     const gameflow = (function () {
         // create two players
@@ -166,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     break;
                 }
             }
-
 
             //sum of diagonals
             const sumDiagonals = {main: 0, second: 0};
@@ -273,15 +230,70 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function randomMove () {
             //placeholder function before minimax implementation
-            gameflow.listAllActions(gameboard.array);
+            const emptyCellIDs = gameflow.listAllActions(gameboard.array);
+            console.log(emptyCellIDs);
+            
             // choose random index in the array (every index is an id of an empty cell)
+            const min = Math.ceil(0);
+            const max = Math.floor(emptyCellIDs.length + 1);
+            console.log(emptyCellIDs.length);
+            const randomIndex = Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            console.log(randomIndex);
             // return the chosen id, so that the displayController can fill the cell with O
-            // change turns
+            return emptyCellIDs[randomIndex];
         }
 
         return {player1, player2, evaluateState, checkGameOver, sayWhoseTurn, listAllActions, resultOfAction, randomMove};
     }
     )();
+    // a module that manages the display (display controller)
+    const displayController = (function () {
+
+        // displaying the content of the appropriate array cell in the DOM
+        const gameCells = document.querySelectorAll(".cell-content");
+        gameCells.forEach(gameCell => {
+            // every cell-content id corresponds to the array position 
+            gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
+
+            // change class if cell isn't empty so that it doesn't change on hover
+            if (gameCell.textContent !== '') {
+                gameCell.parentNode.className = 'cell';
+            }
+        });
+
+        // listens to clicks from users on the grid divs, checks if div
+        // is empty or full. if empty and users turn
+        gameCells.forEach(gameCell => {
+            gameCell.addEventListener('click', () => {
+            if (gameCell.textContent === '') {
+                // human is 1, ai is 0
+                if (gameflow.sayWhoseTurn(gameboard.array)) {
+                    // change gameboard array and the div content to X
+                    gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
+                    gameCell.textContent = gameflow.player1.sign;
+                    gameCell.parentNode.className = 'cell';
+                    // will probably have to tie ai move to human move, which makes sense....
+                    // add a second of waiting
+                    console.log ("It's ai turn")
+                    // change gameboard array and the div content to O
+                    const randMoveID = gameflow.randomMove();
+                    console.log ("random move is at " + randMoveID);
+                    gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
+                    const aiCell = document.getElementById(randMoveID);
+                    aiCell.textContent = gameflow.player2.sign;
+                    aiCell.parentNode.className = 'cell';
+                }
+            }
+            });
+        });
+
+        // add a small sleep timer before displaying the AI turn
+        // displays winning message if game over
+        // optional: displays winning diagonal/row
+        return {};
+    }
+    )();
+
 
 });
 
