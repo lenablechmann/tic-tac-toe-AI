@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const gameboard = {
         array: [
             ['', '', ''],
-            ['O', 'X', ''],
+            ['', '', ''],
             ['', '', ''],
         ]
     };
@@ -65,15 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
             }
-            // console.dir(digitsArray);
-            // console.log("There are " + emptiesCounter + " empty cells.");
             if (!emptiesCounter) {
                 // if the gameboard is full, game is over
                 winningSummary.gameOver = true;
             }
             // sums rows
             const rowSum = digitsArray.map(r => r.reduce((a, b) => a + b));
-            console.log(`The sum of rows is ${rowSum}`)
             // loops through the new array, and finds any winning row
             for (let i = 0; i < rowSum.length; i++) {
                 if (!rowSum[i]) {
@@ -100,7 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // sums of columns
             const colSum = digitsArray.reduce((a, b) => a.map((x, i) => x + b[i]));
-            // console.log(`The sum of columns is ${colSum}`)
             for (let i = 0; i < colSum.length; i++) {
                 if (!colSum[i]) {
                     winningSummary.winner = 'O';
@@ -173,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     winningSummary.winningIds.push(winnerId);
                 }
             }
-
             return winningSummary;
         }
 
@@ -231,14 +226,13 @@ document.addEventListener("DOMContentLoaded", function () {
         function randomMove () {
             //placeholder function before minimax implementation
             const emptyCellIDs = gameflow.listAllActions(gameboard.array);
-            console.log(emptyCellIDs);
+            console.log("Empty cells at " + emptyCellIDs);
             
             // choose random index in the array (every index is an id of an empty cell)
             const min = Math.ceil(0);
-            const max = Math.floor(emptyCellIDs.length + 1);
-            console.log(emptyCellIDs.length);
+            const max = Math.floor(emptyCellIDs.length);
             const randomIndex = Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-            console.log(randomIndex);
+            console.log("The random index is " + randomIndex);
             // return the chosen id, so that the displayController can fill the cell with O
             return emptyCellIDs[randomIndex];
         }
@@ -261,8 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // listens to clicks from users on the grid divs, checks if div
-        // is empty or full. if empty and users turn
+        // listens to clicks from users on the grid divs and displays turn results
         gameCells.forEach(gameCell => {
             gameCell.addEventListener('click', () => {
             if (gameCell.textContent === '') {
@@ -273,21 +266,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     gameCell.textContent = gameflow.player1.sign;
                     gameCell.parentNode.className = 'cell';
                     // will probably have to tie ai move to human move, which makes sense....
-                    // add a second of waiting
-                    console.log ("It's ai turn")
-                    // change gameboard array and the div content to O
                     const randMoveID = gameflow.randomMove();
-                    console.log ("random move is at " + randMoveID);
-                    gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
-                    const aiCell = document.getElementById(randMoveID);
-                    aiCell.textContent = gameflow.player2.sign;
-                    aiCell.parentNode.className = 'cell';
+                    if (randMoveID !== undefined) {
+                        gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
+                        const aiCell = document.getElementById(randMoveID);
+                        aiCell.textContent = gameflow.player2.sign;
+                        aiCell.parentNode.className = 'cell';
+                    }
+
+                    // check for a win and display the result
+                    const gameEndCheck = gameflow.checkGameOver(gameboard.array);
+                    if (gameEndCheck.gameOver) {
+                        console.log("game is over, winning ids are: " + gameEndCheck.winningIds + "Winner is " + gameEndCheck.winner)
+                        // TODO make sure, game is locked once there is a winner!!!
+                        // display winning row/col/diagonal
+                        // TODO add a restart functionality
+                    }
                 }
             }
             });
         });
 
-        // add a small sleep timer before displaying the AI turn
         // displays winning message if game over
         // optional: displays winning diagonal/row
         return {};
