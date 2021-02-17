@@ -242,7 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
     )();
     // a module that manages the display (display controller)
     const displayController = (function () {
-
         // displaying the content of the appropriate array cell in the DOM
         const gameCells = document.querySelectorAll(".cell-content");
         gameCells.forEach(gameCell => {
@@ -260,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
             gameCell.addEventListener('click', () => {
             if (gameCell.textContent === '') {
                 // human is 1, ai is 0
-                if (gameflow.sayWhoseTurn(gameboard.array)) {
+                if (gameflow.sayWhoseTurn(gameboard.array) && !gameflow.checkGameOver(gameboard.array).gameOver) {
                     // change gameboard array and the div content to X
                     gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
                     gameCell.textContent = gameflow.player1.sign;
@@ -273,15 +272,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         aiCell.textContent = gameflow.player2.sign;
                         aiCell.parentNode.className = 'cell';
                     }
-
-                    // check for a win and display the result
+                    // after each turn check if game over and display the winner
                     const gameEndCheck = gameflow.checkGameOver(gameboard.array);
-                    if (gameEndCheck.gameOver) {
-                        console.log("game is over, winning ids are: " + gameEndCheck.winningIds + "Winner is " + gameEndCheck.winner)
-                        // TODO make sure, game is locked once there is a winner!!!
-                        // display winning row/col/diagonal
-                        // TODO add a restart functionality
-                    }
+                    console.log(gameEndCheck.gameOver)
+                    // display winning message
+                    // display winning row/col/diagonal
+                    // TODO add a restart functionality
                 }
             }
             });
