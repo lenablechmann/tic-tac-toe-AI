@@ -240,10 +240,22 @@ document.addEventListener("DOMContentLoaded", function () {
         return {player1, player2, evaluateState, checkGameOver, sayWhoseTurn, listAllActions, resultOfAction, randomMove};
     }
     )();
+
     // a module that manages the display (display controller)
     const displayController = (function () {
-        // displaying the content of the appropriate array cell in the DOM
+        // object with messages to be displayed on gameover or restart
+        const messages = {
+            win: "You win!",
+            lose: "You lose!",
+            tie: "It's a tie!",
+            default: "Can you beat the algorithm?"
+        };
+        // getting all buttons and DOM content, that will be dynamic
+        const restartBtn = document.getElementById("restart");
         const gameCells = document.querySelectorAll(".cell-content");
+        const gameMessage = document.querySelector(".score-message");
+
+        // displaying the content of the appropriate array cell in the DOM
         gameCells.forEach(gameCell => {
             // every cell-content id corresponds to the array position 
             gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
@@ -274,16 +286,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     // after each turn check if game over and display the winner
                     const gameEndCheck = gameflow.checkGameOver(gameboard.array);
-                    console.log(gameEndCheck.gameOver)
-                    // display winning message
-                    // display winning row/col/diagonal
+
+                    // if game over with the move display winning message
+                    if (gameEndCheck.gameOver) {
+                        switch (gameEndCheck.winner) {
+                            case 'O':
+                                gameMessage.textContent = messages.lose;
+                                break;
+                            case 'X':
+                                gameMessage.textContent = messages.win;
+                                break;
+                            default:
+                                gameMessage.textContent = messages.tie;
+                                break;
+                        }
+                    }
+                    // TODO display winning row/col/diagonal
                 }
             }
             });
         });
 
-        // TODO add a restart functionality
-        const restartBtn = document.getElementById("restart");
         restartBtn.addEventListener('click', () => {
             console.log("Why restart tho");
             gameboard.array = [
@@ -295,6 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // every cell-content id corresponds to the array position 
                 gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
             });
+
+            // reset message to the non game over one
+            gameMessage.textContent = messages.default;
         });
 
     }
