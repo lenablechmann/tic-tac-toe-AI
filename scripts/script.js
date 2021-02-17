@@ -277,15 +277,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log(gameEndCheck.gameOver)
                     // display winning message
                     // display winning row/col/diagonal
-                    // TODO add a restart functionality
                 }
             }
             });
         });
 
-        // displays winning message if game over
-        // optional: displays winning diagonal/row
-        return {};
+        // TODO add a restart functionality
+        const restartBtn = document.getElementById("restart");
+        restartBtn.addEventListener('click', () => {
+            console.log("Why restart tho");
+            gameboard.array = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+            ];
+            gameCells.forEach(gameCell => {
+                // every cell-content id corresponds to the array position 
+                gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
+            });
+        });
+
     }
     )();
 
