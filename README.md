@@ -4,7 +4,7 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 ## Specification
 - create a tic tac toe game in javascript, html, css
 - user should be player 1
-- AI (minimax algorithm) will be player 2
+- AI (minimax algorithm, which will recursively search the game tree) will be player 2
 - Mobile first minimalistic design with figma
 - use CSS grid and flexbox for layout
 - avoid global namespace polution by using the revealing module pattern
@@ -20,6 +20,7 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - [x] write out the winning logic condition
 - [x] display winner and ideally show what the winning row/diagonal is
 - [x] program how the new round will be started after the win
+- [ ] plan out the pseudocode for the AI (a separate module?)
 - [ ] add the AI (if you dare)
 - [ ] add an architectural overview in form of a chart
 

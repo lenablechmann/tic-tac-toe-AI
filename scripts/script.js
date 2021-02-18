@@ -269,19 +269,28 @@ document.addEventListener("DOMContentLoaded", function () {
             gameCell.addEventListener('click', () => {
             if (gameCell.textContent === '') {
                 // human is 1, ai is 0
+                // player moves getting displayed
                 if (gameflow.sayWhoseTurn(gameboard.array) && !gameflow.checkGameOver(gameboard.array).gameOver) {
                     // change gameboard array and the div content to X
                     gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
                     gameCell.textContent = gameflow.player1.sign;
                     gameCell.parentNode.className = 'cell';
-                    // will probably have to tie ai move to human move, which makes sense....
                     const randMoveID = gameflow.randomMove();
+                    
+                    
+                    // PLAYER 2 (bot turn)
                     if (randMoveID !== undefined) {
-                        gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
-                        const aiCell = document.getElementById(randMoveID);
-                        aiCell.textContent = gameflow.player2.sign;
-                        aiCell.parentNode.className = 'cell';
+                        // bot only takes turn if game isn't over
+                        if (!gameflow.checkGameOver(gameboard.array).gameOver) {
+                            gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
+                            const aiCell = document.getElementById(randMoveID);
+                            aiCell.textContent = gameflow.player2.sign;
+                            aiCell.parentNode.className = 'cell';
+                        }
                     }
+                    // TODO create a separate function so that it can actually get
+                    // called after each turn
+
                     // after each turn check if game over and display the winner
                     const gameEndCheck = gameflow.checkGameOver(gameboard.array);
 
@@ -309,6 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
                            const winningCellID = gameEndCheck.winningIds[counter];
                            const winningCell = document.getElementById(winningCellID);
                            winningCell.classList.add('cell-content-game-over')
+
                         }
                     }
                 }
@@ -325,6 +335,9 @@ document.addEventListener("DOMContentLoaded", function () {
             gameCells.forEach(gameCell => {
                 // every cell-content id corresponds to the array position 
                 gameCell.textContent = gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)];
+                // TODO need to also reset classes upon reset
+                // remove cell-content-game-over but also set cells to empty
+                gameCell.className = 'cell-content';
             });
 
             // reset message to the non game over one
