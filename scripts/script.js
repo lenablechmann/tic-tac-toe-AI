@@ -226,13 +226,11 @@ document.addEventListener("DOMContentLoaded", function () {
         function randomMove () {
             //placeholder function before minimax implementation
             const emptyCellIDs = gameflow.listAllActions(gameboard.array);
-            console.log("Empty cells at " + emptyCellIDs);
             
             // choose random index in the array (every index is an id of an empty cell)
             const min = Math.ceil(0);
             const max = Math.floor(emptyCellIDs.length);
             const randomIndex = Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-            console.log("The random index is " + randomIndex);
             // return the chosen id, so that the displayController can fill the cell with O
             return emptyCellIDs[randomIndex];
         }
@@ -301,14 +299,24 @@ document.addEventListener("DOMContentLoaded", function () {
                                 break;
                         }
                     }
-                    // TODO display winning row/col/diagonal
+
+                    // change style of winning row/col/diagonal
+                    // so the user can see what was the winning combination, better UX
+                    if (gameEndCheck.winningIds.length) {
+                        // loop over all winning combination cells
+                        // change class to .cell-content-game-over
+                        for (let counter = 0; counter < gameEndCheck.winningIds.length; counter++) {
+                           const winningCellID = gameEndCheck.winningIds[counter];
+                           const winningCell = document.getElementById(winningCellID);
+                           winningCell.classList.add('cell-content-game-over')
+                        }
+                    }
                 }
             }
             });
         });
 
         restartBtn.addEventListener('click', () => {
-            console.log("Why restart tho");
             gameboard.array = [
             ['', '', ''],
             ['', '', ''],

@@ -88,6 +88,9 @@ header {
         color: #113A5D;
         font-size: 3rem;
     }
+    .cell-content-game-over {
+        color: #FF7A8A;
+    }
 
 .restart-btn {
     background-color: #113A5D;
