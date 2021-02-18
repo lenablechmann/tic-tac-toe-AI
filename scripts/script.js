@@ -253,6 +253,38 @@ document.addEventListener("DOMContentLoaded", function () {
         const gameCells = document.querySelectorAll(".cell-content");
         const gameMessage = document.querySelector(".score-message");
 
+        function displayGameEnd () {
+                // after each turn check if game over and display the winner
+            const gameEndCheck = gameflow.checkGameOver(gameboard.array);
+
+            // if game over with the move display winning message
+            if (gameEndCheck.gameOver) {
+                switch (gameEndCheck.winner) {
+                    case 'O':
+                        gameMessage.textContent = messages.lose;
+                        break;
+                    case 'X':
+                        gameMessage.textContent = messages.win;
+                        break;
+                    default:
+                        gameMessage.textContent = messages.tie;
+                        break;
+                }
+            }
+
+            // change style of winning row/col/diagonal, if such exists
+            // so the user can see what was the winning combination, better UX
+            if (gameEndCheck.winningIds.length) {
+                // loop over all winning combination cells
+                // change class to .cell-content-game-over
+                for (let counter = 0; counter < gameEndCheck.winningIds.length; counter++) {
+                const winningCellID = gameEndCheck.winningIds[counter];
+                const winningCell = document.getElementById(winningCellID);
+                winningCell.classList.add('cell-content-game-over')
+                }
+            }
+        }
+
         // displaying the content of the appropriate array cell in the DOM
         gameCells.forEach(gameCell => {
             // every cell-content id corresponds to the array position 
@@ -271,11 +303,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 // human is 1, ai is 0
                 // player moves getting displayed
                 if (gameflow.sayWhoseTurn(gameboard.array) && !gameflow.checkGameOver(gameboard.array).gameOver) {
+                    // PLAYER 1 turn (human)
                     // change gameboard array and the div content to X
                     gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
                     gameCell.textContent = gameflow.player1.sign;
                     gameCell.parentNode.className = 'cell';
                     const randMoveID = gameflow.randomMove();
+                    displayGameEnd();
                     
                     
                     // PLAYER 2 (bot turn)
@@ -288,39 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             aiCell.parentNode.className = 'cell';
                         }
                     }
-                    // TODO create a separate function so that it can actually get
-                    // called after each turn
-
-                    // after each turn check if game over and display the winner
-                    const gameEndCheck = gameflow.checkGameOver(gameboard.array);
-
-                    // if game over with the move display winning message
-                    if (gameEndCheck.gameOver) {
-                        switch (gameEndCheck.winner) {
-                            case 'O':
-                                gameMessage.textContent = messages.lose;
-                                break;
-                            case 'X':
-                                gameMessage.textContent = messages.win;
-                                break;
-                            default:
-                                gameMessage.textContent = messages.tie;
-                                break;
-                        }
-                    }
-
-                    // change style of winning row/col/diagonal
-                    // so the user can see what was the winning combination, better UX
-                    if (gameEndCheck.winningIds.length) {
-                        // loop over all winning combination cells
-                        // change class to .cell-content-game-over
-                        for (let counter = 0; counter < gameEndCheck.winningIds.length; counter++) {
-                           const winningCellID = gameEndCheck.winningIds[counter];
-                           const winningCell = document.getElementById(winningCellID);
-                           winningCell.classList.add('cell-content-game-over')
-
-                        }
-                    }
+                    displayGameEnd();
                 }
             }
             });
