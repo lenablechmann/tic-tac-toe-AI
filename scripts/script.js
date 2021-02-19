@@ -349,6 +349,50 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     )();
 
+    const bot = (function () {
+        /*
+        implement minimax ai
+        things needed:
+        - [DONE in gameflow] function that says whose turn it is (given a gameboard array)
+        - [DONE in gameflow] all possible actions (empty cells) (input gameboard array, output array of ids)
+        - [TODO] a result function that takes 2 inputs: gameboard board + action, returns resulting state  
+            without modifying the original board (deep copy of the board)
+        - [DONE in gameflow] winner fu accepts board as input returns winner
+        - [DONE in gameflow] is the game over?
+        - [TODO] a utility function: If X has won the game, the utility is 1. If O has won the game, the utility is -1. If the game has ended in a tie, the utility is 0.
+            will only get called if game is over
+        - [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
+            minimax(state, depth, player)
 
+        Pseudocode minimax:
+        max === +1 ; min === -1;
+        function minimax(gamestate, depth, player) {
+        if (player = max) then
+            best = [-1, -1, -infinity]
+        else
+            best = [-1, -1, +infinity]
+
+        if (depth = 0 or gameover_method(true)) then
+            score = evaluate_this_state_method(state) for player
+            return [-1, -1, score]
+
+            loop over empty cells in the valid_actions_array:
+
+            execute move  on state
+
+            [move, score] = minimax(s, depth - 1, -player)
+
+            if (player = max) then
+                if score > best.score then best = [move, score]
+            else
+                if score < best.score then best = [move, score]
+
+        return best
+    end
+
+        }
+        */
+    } ());
+    
 });
 
