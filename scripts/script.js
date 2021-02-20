@@ -366,8 +366,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Pseudocode minimax:
         max === +1 ; min === -1;
+        
+        we could do a DFS but for every value calculation (utility function)
+        the weight of the empty cells can be added (value = +1*(numEmptyCells+1)) for max winning (-1*(empties+1)) for min
+        this way we could win in as few steps as possible
+        // then propagate them back up to get the value of the move
+
         function minimax(gamestate, depth, player) {
         if (player = max) then
+        keeping track of the best score
             best = [-1, -1, -infinity]
         else
             best = [-1, -1, +infinity]
