@@ -225,8 +225,81 @@ document.addEventListener("DOMContentLoaded", function () {
             // return the chosen id, so that the displayController can fill the cell with O
             return emptyCellIDs[randomIndex];
         }
+        /*
+        implement minimax ai
+        - [DONE in gameflow] function that says whose turn it is (given a gameboard array)
+        - [DONE in gameflow] all possible actions (empty cells) (input gameboard array, output array of ids)
+            without modifying the original board (deep copy of the board)
+        - [DONE in gameflow] winner fu accepts board as input returns winner
+        - [DONE in gameflow] is the game over?
+        - [DONE] a result function that takes inputs: 
+            gameboard board + action (cell id as a string) + sign (as a string), returns resulting state  
+        */ 
 
-        return {player1, player2, evaluateState, checkGameOver, sayWhoseTurn, listAllActions, resultOfAction, randomMove};
+        function resultOfAction (gameArray, moveID, sign) {
+            // deep copying gameArray with an ES6 destructuring
+            let resultState = [...gameArray];
+            resultState[parseInt(moveID.charAt(0))][parseInt(moveID.charAt(1))] = sign;
+            return resultState;
+        };
+        
+        function evaluateState(gameArray) {
+        /*  a utility function: If X has won the game, the utility is 1.
+            If O has won the game, the utility is -1. 
+            If the game has ended in a tie, the utility is 0.
+            will only get called if game is over, can also multiply with 
+            emptyCells+1 to find quickest move
+        */
+            const winner = gameflow.checkGameOver(gameArray).winner;
+            let value = 0;
+            // X is maximizer, O is minimizer
+
+            // user wins
+            if (winner === 'X'){
+                // the more empty cells left the better for the player (quicker win)
+                value = 1 * (gameflow.listAllActions.length + 1);
+            }
+            // ai wins
+            else if (winner === 'O'){
+                value = (-1) * (gameflow.listAllActions.length + 1);
+            }
+
+            // returns value 0 if a draw
+            return value;
+        };
+
+        // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
+        function minimax() {
+
+        };
+        /* 
+        // python code for minimax to understand the logic (source here: 
+        // https://towardsdatascience.com/game-ais-with-minimax-and-monte-carlo-tree-search-af2a177361b0 )
+         def minimax(state, max_depth, is_player_minimizer):
+            if max_depth == 0 or state.is_end_state():
+                return evaluation_function(state)  
+                
+            if is_player_minimizer:
+                value = -math.inf
+                for move in state.possible_moves():
+                evaluation = minimax(move, max_depth - 1, False)
+                min = min(value, evaluation)
+                return value  
+                
+                value = math.inf
+                for move in state.possible_moves():
+                evaluation = minimax(move, max_depth - 1, True)
+                max = max(value, evaluation)
+            return value
+        */
+
+       // making the methods public
+
+        return {
+            player1, player2,
+            evaluateState, checkGameOver,
+            sayWhoseTurn, listAllActions,
+            resultOfAction, randomMove};
     }
     )();
 
@@ -339,75 +412,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
     )();
-
-    const bot = (function () {
-        /*
-        implement minimax ai
-        - [DONE in gameflow] function that says whose turn it is (given a gameboard array)
-        - [DONE in gameflow] all possible actions (empty cells) (input gameboard array, output array of ids)
-            without modifying the original board (deep copy of the board)
-        - [DONE in gameflow] winner fu accepts board as input returns winner
-        - [DONE in gameflow] is the game over?
-        */ 
-
-        // [DONE] a result function that takes inputs: 
-        // gameboard board + action (cell id as a string) + sign (as a string), returns resulting state  
-        function resultOfAction (gameArray, moveID, sign) {
-            // deep copying gameArray with an ES6 destructuring
-            let resultState = [...gameArray];
-            resultState[parseInt(moveID.charAt(0))][parseInt(moveID.charAt(1))] = sign;
-            return resultState;
-        };
-        
-        //[TODO] a utility function: If X has won the game, the utility is 1. If O has won the game, the utility is -1. If the game has ended in a tie, the utility is 0.
-        //    will only get called if game is over, can also multiply with emptyCells+1 to find quickest move
-        function evaluateState(gameArray) {
-            const winner = gameflow.checkGameOver(gameArray).winner;
-            let value = 0;
-            // X is maximizer, O is minimizer
-
-            // user wins
-            if (winner === 'X'){
-                // the more empty cells left the better for the player (quicker win)
-                value = 1 * (gameflow.listAllActions.length + 1);
-            }
-            // ai wins
-            else if (winner === 'O'){
-                value = (-1) * (gameflow.listAllActions.length + 1);
-            }
-
-            // returns value 0 if a draw
-            return value;
-        };
-
-        // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
-        function minimax() {
-
-        };
-        /* 
-        // python code for minimax to understand the logic (source here: 
-        // https://towardsdatascience.com/game-ais-with-minimax-and-monte-carlo-tree-search-af2a177361b0 )
-         def minimax(state, max_depth, is_player_minimizer):
-            if max_depth == 0 or state.is_end_state():
-                return evaluation_function(state)  
-                
-            if is_player_minimizer:
-                value = -math.inf
-                for move in state.possible_moves():
-                evaluation = minimax(move, max_depth - 1, False)
-                min = min(value, evaluation)
-                return value  
-                
-                value = math.inf
-                for move in state.possible_moves():
-                evaluation = minimax(move, max_depth - 1, True)
-                max = max(value, evaluation)
-            return value
-        */
-
-       // making the methods public
-       return { resultOfAction, minimax, evaluateState };
-    } ());
     
 });
 
