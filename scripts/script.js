@@ -268,12 +268,17 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
-        function minimax() {
+        function minimax(gameArray, maxDepth, playerSign) {
+            console.log("Depth is: " + maxDepth + " And player sign is: " + playerSign);
+            if (maxDepth === 0 || checkGameOver(gameArray).gameOver == true){
+                console.log("game over, player sign is" + playerSign);
+            }
 
         };
         /* 
         // python code for minimax to understand the logic (source here: 
         // https://towardsdatascience.com/game-ais-with-minimax-and-monte-carlo-tree-search-af2a177361b0 )
+    
          def minimax(state, max_depth, is_player_minimizer):
             if max_depth == 0 or state.is_end_state():
                 return evaluation_function(state)  
@@ -384,12 +389,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     // PLAYER 2 (bot turn)
                     if (randMoveID !== undefined) {
+                        // calling minimax for 'O'
+                        gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, 'O');
+
                         // bot only takes turn if game isn't over
                         if (!gameflow.checkGameOver(gameboard.array).gameOver) {
                             gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
                             const aiCell = document.getElementById(randMoveID);
                             aiCell.textContent = gameflow.player2.sign;
                             aiCell.parentNode.className = 'cell';
+
                         }
                     }
                     displayGameEnd();
