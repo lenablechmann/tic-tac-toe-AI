@@ -167,7 +167,6 @@ function checkGameOver (gameArray) {
     }
     // sums rows
     const rowSum = digitsArray.map(r => r.reduce((a, b) => a + b));
-    console.log(`The sum of rows is ${rowSum}`)
     // loops through the new array, and finds any winning row
     for (let i = 0; i < rowSum.length; i++) {
         if (!rowSum[i]) {

@@ -350,12 +350,12 @@ document.addEventListener("DOMContentLoaded", function () {
         - [DONE in gameflow] is the game over?
         */ 
 
-       // [TODO] a result function that takes inputs: 
-       // gameboard board + action (cell id as a string) + sign (as a string), returns resulting state  
+        // [DONE] a result function that takes inputs: 
+        // gameboard board + action (cell id as a string) + sign (as a string), returns resulting state  
         function resultOfAction (gameArray, moveID, sign) {
             // deep copying gameArray with an ES6 destructuring
             let resultState = [...gameArray];
-            resultState[moveID.charAt[0]][moveID.charAt[1]] = sign;
+            resultState[parseInt(moveID.charAt(0))][parseInt(moveID.charAt(1))] = sign;
             return resultState;
         };
         
