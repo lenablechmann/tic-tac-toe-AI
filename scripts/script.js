@@ -250,20 +250,19 @@ document.addEventListener("DOMContentLoaded", function () {
             will only get called if game is over, can also multiply with 
             emptyCells+1 to find quickest move
         */
-            const winner = gameflow.checkGameOver(gameArray).winner;
+            const winner = checkGameOver(gameArray).winner;
             let value = 0;
             // X is maximizer, O is minimizer
 
             // user wins
             if (winner === 'X'){
                 // the more empty cells left the better for the player (quicker win)
-                value = 1 * (gameflow.listAllActions.length + 1);
+                value = 1 * (listAllActions(gameArray).length + 1);
             }
             // ai wins
             else if (winner === 'O'){
-                value = (-1) * (gameflow.listAllActions.length + 1);
+                value = (-1) * (listAllActions(gameArray).length + 1);
             }
-
             // returns value 0 if a draw
             return value;
         };
@@ -296,10 +295,16 @@ document.addEventListener("DOMContentLoaded", function () {
        // making the methods public
 
         return {
-            player1, player2,
-            evaluateState, checkGameOver,
-            sayWhoseTurn, listAllActions,
-            resultOfAction, randomMove};
+          player1,
+          player2,
+          evaluateState,
+          checkGameOver,
+          sayWhoseTurn,
+          listAllActions,
+          resultOfAction,
+          randomMove,
+          minimax,
+        };
     }
     )();
 
@@ -373,6 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     gameCell.textContent = gameflow.player1.sign;
                     gameCell.parentNode.className = 'cell';
                     const randMoveID = gameflow.randomMove();
+                    console.log('value of user move: ' + gameflow.evaluateState(gameboard.array));
                     displayGameEnd();
                     
                     
