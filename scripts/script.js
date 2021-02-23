@@ -259,9 +259,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
         function minimax(gameArray, maxDepth, player) {
-            // create object that will have both best value and the appropriate move 
+            // create object that will have both best value and the appropriate move for O
+            // who is a minimizer
             let best = {
-                value : 0,
+                value : +Infinity,
                 moveID : ''
             };
             // players are 0 and 1, x is 1, 0 is O
@@ -269,12 +270,10 @@ document.addEventListener("DOMContentLoaded", function () {
             // let's say x is 1, and is maximizer (the higher the value, the better). 
             // O is 0 and a minimizer (the lower the value of the board the better)
             console.log("Depth is: " + maxDepth + " And player is: " + player);
+
             function maximizer(gameArray){
                 const actionsArray = listAllActions(gameArray);
-                let winningMove = '';
-
                 if (maxDepth === 0 || checkGameOver(gameArray).gameOver === true){
-                    console.log("game value is " + evaluateState(gameArray));
                     return evaluateState(gameArray);
                 }
                 else {
@@ -284,11 +283,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     // looping over every empty cell and finding the value that that cell would bring
                     for (let index = 0; index < actionsArray.length; index++) {
                         const action = actionsArray[index];
-                        // X is maximizer
+                        // X is maximizer, resultOfAction also copies the array
                         const actionResult = resultOfAction(gameArray, action, 'X');
                         value = Math.max(value, minimizer(actionResult));
-                        move = actionsArray[index];
                         // need to also return the move and overwrite the global best move if it's better
+                        return value;
+                    }
+                }
+            }
+            function minimizer(gameArray){
+                const actionsArray = listAllActions(gameArray);
+                if (maxDepth === 0 || checkGameOver(gameArray).gameOver === true){
+                    return evaluateState(gameArray);
+                }
+                else {
+                    let value = +Infinity;
+                    // looping over every empty cell and finding the value that that cell would bring
+                    for (let index = 0; index < actionsArray.length; index++) {
+                        const action = actionsArray[index];
+                        // O is minimizer, resultOfAction also copies the array
+                        const actionResult = resultOfAction(gameArray, action, 'O');
+                        value = Math.min(value, maximizer(actionResult));
+                        if (value < best.value) {
+                            best.value = value;
+                            best.moveID = actionsArray[index];
+                        }
                         return value;
                     }
                 }
