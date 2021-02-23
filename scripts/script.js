@@ -225,16 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // return the chosen id, so that the displayController can fill the cell with O
             return emptyCellIDs[randomIndex];
         }
-        /*
-        implement minimax ai
-        - [DONE in gameflow] function that says whose turn it is (given a gameboard array)
-        - [DONE in gameflow] all possible actions (empty cells) (input gameboard array, output array of ids)
-            without modifying the original board (deep copy of the board)
-        - [DONE in gameflow] winner fu accepts board as input returns winner
-        - [DONE in gameflow] is the game over?
-        - [DONE] a result function that takes inputs: 
-            gameboard board + action (cell id as a string) + sign (as a string), returns resulting state  
-        */ 
 
         function resultOfAction (gameArray, moveID, sign) {
             // deep copying gameArray with an ES6 destructuring
@@ -268,36 +258,42 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
-        function minimax(gameArray, maxDepth, playerSign) {
-            console.log("Depth is: " + maxDepth + " And player sign is: " + playerSign);
-            if (maxDepth === 0 || checkGameOver(gameArray).gameOver == true){
-                console.log("game over, player sign is" + playerSign);
+        function minimax(gameArray, maxDepth, player) {
+            // create object that will have both best value and the appropriate move 
+            let best = {
+                value : 0,
+                moveID : ''
+            };
+            // players are 0 and 1, x is 1, 0 is O
+
+            // let's say x is 1, and is maximizer (the higher the value, the better). 
+            // O is 0 and a minimizer (the lower the value of the board the better)
+            console.log("Depth is: " + maxDepth + " And player is: " + player);
+            function maximizer(gameArray){
+                const actionsArray = listAllActions(gameArray);
+                let winningMove = '';
+
+                if (maxDepth === 0 || checkGameOver(gameArray).gameOver === true){
+                    console.log("game value is " + evaluateState(gameArray));
+                    return evaluateState(gameArray);
+                }
+                else {
+                    // Maximizer wants a max value, so we start off with the worst possible
+                    let value = -Infinity;
+
+                    // looping over every empty cell and finding the value that that cell would bring
+                    for (let index = 0; index < actionsArray.length; index++) {
+                        const action = actionsArray[index];
+                        // X is maximizer
+                        const actionResult = resultOfAction(gameArray, action, 'X');
+                        value = Math.max(value, minimizer(actionResult));
+                        move = actionsArray[index];
+                        // need to also return the move and overwrite the global best move if it's better
+                        return value;
+                    }
+                }
             }
-
         };
-        /* 
-        // python code for minimax to understand the logic (source here: 
-        // https://towardsdatascience.com/game-ais-with-minimax-and-monte-carlo-tree-search-af2a177361b0 )
-    
-         def minimax(state, max_depth, is_player_minimizer):
-            if max_depth == 0 or state.is_end_state():
-                return evaluation_function(state)  
-                
-            if is_player_minimizer:
-                value = -math.inf
-                for move in state.possible_moves():
-                evaluation = minimax(move, max_depth - 1, False)
-                min = min(value, evaluation)
-                return value  
-                
-                value = math.inf
-                for move in state.possible_moves():
-                evaluation = minimax(move, max_depth - 1, True)
-                max = max(value, evaluation)
-            return value
-        */
-
-       // making the methods public
 
         return {
           player1,
@@ -383,14 +379,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     gameCell.textContent = gameflow.player1.sign;
                     gameCell.parentNode.className = 'cell';
                     const randMoveID = gameflow.randomMove();
-                    console.log('value of user move: ' + gameflow.evaluateState(gameboard.array));
                     displayGameEnd();
                     
                     
                     // PLAYER 2 (bot turn)
                     if (randMoveID !== undefined) {
                         // calling minimax for 'O'
-                        gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, 'O');
+                        gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, gameflow.sayWhoseTurn(gameboard.array));
 
                         // bot only takes turn if game isn't over
                         if (!gameflow.checkGameOver(gameboard.array).gameOver) {
@@ -401,6 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         }
                     }
+                    // gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, gameflow.sayWhoseTurn(gameboard.array));
                     displayGameEnd();
                 }
             }
