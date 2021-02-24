@@ -227,10 +227,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function resultOfAction (gameArray, moveID, sign) {
-            // deep copying gameArray with an ES6 destructuring
             let resultState = [...gameArray];
             resultState[parseInt(moveID.charAt(0))][parseInt(moveID.charAt(1))] = sign;
             return resultState;
+        };
+
+        function reverseAction (gameArray, moveID) {
+            gameArray[parseInt(moveID.charAt(0))][parseInt(moveID.charAt(1))] = "";
+            return gameArray;
         };
         
         function evaluateState(gameArray) {
@@ -270,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // O is 0 and a minimizer (the lower the value of the board the better)
             function maximizer(gameArray){
                 const actionsArray = listAllActions(gameArray);
-                if (maxDepth === 0 || checkGameOver(gameArray).gameOver === true){
+                if (checkGameOver(gameArray).gameOver === true){
                     return evaluateState(gameArray);
                 }
                 else {
@@ -283,14 +287,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         // X is maximizer, resultOfAction also copies the array
                         const actionResult = resultOfAction(gameArray, action, 'X');
                         value = Math.max(value, minimizer(actionResult));
-                        // need to also return the move and overwrite the global best move if it's better
+                        reverseAction(gameArray, action);
                         return value;
                     }
                 }
             }
             function minimizer(gameArray){
                 const actionsArray = listAllActions(gameArray);
-                if (maxDepth === 0 || checkGameOver(gameArray).gameOver === true){
+                if (checkGameOver(gameArray).gameOver === true){
                     return evaluateState(gameArray);
                 }
                 else {
@@ -306,12 +310,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             best.value = value;
                             best.moveID = actionsArray[index];
                         }
+                        reverseAction(gameArray, action);
+
                         return value;
                     }
                 }
             }
             // [TODO] minimax will only get called for O, so... we can leverage that. and call minimizer immediately
             minimizer(gameArray);
+            console.log(gameArray);
             return best.moveID;
         };
 
@@ -398,25 +405,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     gameboard.array[gameCell.id.charAt(0)][gameCell.id.charAt(1)] = gameflow.player1.sign;
                     gameCell.textContent = gameflow.player1.sign;
                     gameCell.parentNode.className = 'cell';
-                    const randMoveID = gameflow.randomMove();
                     displayGameEnd();
                     
-                    
-                    // PLAYER 2 (bot turn)
-                    if (randMoveID !== undefined) {
-                        // calling minimax for 'O'
-                        gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, gameflow.sayWhoseTurn(gameboard.array));
-
-                        // bot only takes turn if game isn't over
-                        if (!gameflow.checkGameOver(gameboard.array).gameOver) {
-                            gameboard.array[randMoveID.charAt(0)][randMoveID.charAt(1)] = gameflow.player2.sign;
-                            const aiCell = document.getElementById(randMoveID);
-                            aiCell.textContent = gameflow.player2.sign;
-                            aiCell.parentNode.className = 'cell';
-
+                    // calling minimax for 'O' player 2
+                        const minimaxResult = gameflow.minimax(gameboard.array);
+                        if (minimaxResult !== "") {
+                            if (!gameflow.checkGameOver(gameboard.array).gameOver) {
+                                gameboard.array[minimaxResult.charAt(0)][minimaxResult.charAt(1)] = gameflow.player2.sign;
+                                const aiCell = document.getElementById(minimaxResult);
+                                aiCell.textContent = gameflow.player2.sign;
+                                aiCell.parentNode.className = 'cell';
+                                console.log("minmax id is: " + minimaxResult);
+                            }
                         }
-                    }
-                    // gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, gameflow.sayWhoseTurn(gameboard.array));
                     displayGameEnd();
                 }
             }
