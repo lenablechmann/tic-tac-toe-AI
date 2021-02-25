@@ -262,64 +262,43 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
-        function minimax(gameArray) {
-            // create object that will have both best value and the appropriate move for O
-            // who is a minimizer
-            let best = {
-                value : +Infinity,
+        function minimax(gameArray, depth, player) {
+            // create a copy of the array
+            let gameArrayCpy = gameArray.map(inner => inner.slice());
+
+            // log all the starter info
+            console.log("Starter array is: ");
+            console.dir(gameArrayCpy);
+            console.log("Starter depth is: " + depth);
+            console.log("Starter player is: " + player);
+
+            // the goal of the gametree creation is to find the best move
+            let bestMove = {
+                value : 0,
                 moveID : ''
             };
-            // players are 0 and 1, x is 1, 0 is O
-            // let's say x is 1, and is maximizer (the higher the value, the better). 
-            // O is 0 and a minimizer (the lower the value of the board the better)
-            function maximizer(gameArray){
-                const actionsArray = listAllActions(gameArray);
-                if (checkGameOver(gameArray).gameOver === true){
-                    return evaluateState(gameArray);
-                }
-                else {
-                    // Maximizer wants a max value, so we start off with the worst possible
-                    let value = -Infinity;
 
-                    // looping over every empty cell and finding the value that that cell would bring
-                    for (let index = 0; index < actionsArray.length; index++) {
-                        const action = actionsArray[index];
-                        // X is maximizer, resultOfAction also copies the array
-                        const actionResult = resultOfAction(gameArray, action, 'X');
-                        value = Math.max(value, minimizer(actionResult));
-                        reverseAction(gameArray, action);
-                        return value;
-                    }
-                }
+            if (checkGameOver(gameArrayCpy).gameOver || depth === 0){
+                const curValue = evaluateState(gameArrayCpy);
+                console.log("current branch final value " + curValue);
+                // reset gameArray
+                gameArrayCpy = gameArrayOG.map(inner => inner.slice())
+                return curValue;
             }
-            function minimizer(gameArray){
-                const actionsArray = listAllActions(gameArray);
-                if (checkGameOver(gameArray).gameOver === true){
-                    return evaluateState(gameArray);
-                }
-                else {
-                    let value = +Infinity;
-                    // looping over every empty cell and finding the value that that cell would bring
-                    for (let index = 0; index < actionsArray.length; index++) {
-                        const action = actionsArray[index];
-                        // O is minimizer, resultOfAction also copies the array
-                        const actionResult = resultOfAction(gameArray, action, 'O');
-                        value = Math.min(value, maximizer(actionResult));
-                        // returning the best move, as it goes up the stack (recursively)
-                        if (value < best.value) {
-                            best.value = value;
-                            best.moveID = actionsArray[index];
-                        }
-                        reverseAction(gameArray, action);
 
-                        return value;
-                    }
-                }
+            // players are 0 and 1, x is 1 (maximizer), 0 is O (minimizer)
+            else if (player) {
+                bestMove.value = Infinity;
             }
-            // [TODO] minimax will only get called for O, so... we can leverage that. and call minimizer immediately
-            minimizer(gameArray);
-            console.log(gameArray);
-            return best.moveID;
+            else {
+                bestMove.value = -Infinity;
+            }
+
+            for (let index = 0; index < listAllActions(gameArrayCpy).length; index++) {
+               let curScore = minimax(gameArrayCpy, depth - 1, !player);
+               
+            }
+            return bestMove;
         };
 
         return {
@@ -408,14 +387,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     displayGameEnd();
                     
                     // calling minimax for 'O' player 2
-                        const minimaxResult = gameflow.minimax(gameboard.array);
-                        if (minimaxResult !== "") {
+                        const minimaxResult = gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, gameflow.sayWhoseTurn(gameboard.array));
+                        if (minimaxResult.moveID) {
                             if (!gameflow.checkGameOver(gameboard.array).gameOver) {
                                 gameboard.array[minimaxResult.charAt(0)][minimaxResult.charAt(1)] = gameflow.player2.sign;
                                 const aiCell = document.getElementById(minimaxResult);
                                 aiCell.textContent = gameflow.player2.sign;
                                 aiCell.parentNode.className = 'cell';
-                                console.log("minmax id is: " + minimaxResult);
                             }
                         }
                     displayGameEnd();
