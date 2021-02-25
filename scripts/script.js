@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const curValue = evaluateState(gameArrayCpy);
                 console.log("current branch final value " + curValue);
                 // reset gameArray
-                gameArrayCpy = gameArrayOG.map(inner => inner.slice())
+                gameArrayCpy = gameArray.map(inner => inner.slice())
                 return curValue;
             }
 
@@ -295,8 +295,24 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             for (let index = 0; index < listAllActions(gameArrayCpy).length; index++) {
-               let curScore = minimax(gameArrayCpy, depth - 1, !player);
-               
+                const action = listAllActions(gameArrayCpy)[index];
+                // X is maximizer, resultOfAction also copies the array
+                const playerString = (player) ? 'X': 'O';
+                const actionResult = resultOfAction(gameArrayCpy, action, playerString);
+                const curScore = minimax(actionResult, depth - 1, !player);
+
+                if (player){
+                    if (curScore > bestMove.value){
+                        console.log ("found new best score for human: " + curScore)
+                        bestMove.value = curScore;
+                    }
+                }
+                else {
+                    if (curScore < bestMove.value){
+                        console.log ("found new best score for ai: " + curScore)
+                        bestMove.value = curScore;
+                    }
+                }
             }
             return bestMove;
         };
