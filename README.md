@@ -20,8 +20,8 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - [x] write out the winning logic condition
 - [x] display winner and ideally show what the winning row/diagonal is
 - [x] program how the new round will be started after the win
-- [ ] plan out the pseudocode for the AI (a separate module?)
-- [ ] add the AI (if you dare)
+- [x] plan out the pseudocode for the AI (a separate module?)
+- [x] add the AI (if you dare)
 - [ ] add an architectural overview in form of a chart
 
 ## Learning goals
@@ -39,5 +39,6 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses
 - implementing game states in code was also not trivial
 - jest testing builds upon exporting of JS modules, which clashes with the revealing module pattern. Atm I will prioritize using the module pattern, and manually export the functions into test files, since my goal with this project is to learn the revearing module pattern.
+- recursion with trees isn't as straightforward as it used to be with Fibonacci
 
 
