@@ -265,13 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
         function minimax(gameArray, depth, player) {
             // create a copy of the array
             let gameArrayCpy = gameArray.map(inner => inner.slice());
-
-            // log all the starter info
-            // console.log("Starter array is: ");
-            // console.dir(gameArray);
-            // console.log("Starter depth is: " + depth);
-            // console.log("Starter player is: " + player);
-
             // the goal of the gametree creation is to find the best move
             let bestMove = {
                 value : 0,
@@ -282,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const curValue = evaluateState(gameArrayCpy);
                 // console.log("current branch final value " + curValue);
                 // reset gameArray
-                gameArrayCpy = gameArray.map(inner => inner.slice())
+                // gameArrayCpy = gameArray.map(inner => inner.slice())
                 const result = {value: curValue, moveID: ''};
                 return result;
             }
@@ -297,13 +290,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             for (let index = 0; index < listAllActions(gameArrayCpy).length; index++) {
                 console.log("The index in the loop is " + index);
-                console.log(gameArrayCpy);
-                console.log("Current player: " + player);
                 const action = listAllActions(gameArrayCpy)[index];
                 // X is maximizer, resultOfAction also copies the array
                 const playerString = (player) ? 'X': 'O';
                 const actionResult = resultOfAction(gameArrayCpy, action, playerString);
                 const curScore = minimax(actionResult, depth - 1, !player);
+                reverseAction(actionResult, action);
 
                 if (player){
                     if (curScore.value > bestMove.value){
@@ -312,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         bestMove.moveID = action;
                     }
                 }
-                else if (!player) {
+                else {
                     if (curScore.value < bestMove.value){
                         console.log ("found new best score for ai: " + curScore.value)
                         bestMove.value = curScore.value;
