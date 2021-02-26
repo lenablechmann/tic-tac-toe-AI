@@ -267,10 +267,10 @@ document.addEventListener("DOMContentLoaded", function () {
             let gameArrayCpy = gameArray.map(inner => inner.slice());
 
             // log all the starter info
-            console.log("Starter array is: ");
-            console.dir(gameArrayCpy);
-            console.log("Starter depth is: " + depth);
-            console.log("Starter player is: " + player);
+            // console.log("Starter array is: ");
+            // console.dir(gameArray);
+            // console.log("Starter depth is: " + depth);
+            // console.log("Starter player is: " + player);
 
             // the goal of the gametree creation is to find the best move
             let bestMove = {
@@ -280,21 +280,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (checkGameOver(gameArrayCpy).gameOver || depth === 0){
                 const curValue = evaluateState(gameArrayCpy);
-                console.log("current branch final value " + curValue);
+                // console.log("current branch final value " + curValue);
                 // reset gameArray
                 gameArrayCpy = gameArray.map(inner => inner.slice())
-                return curValue;
+                const result = {value: curValue, moveID: ''};
+                return result;
             }
 
             // players are 0 and 1, x is 1 (maximizer), 0 is O (minimizer)
-            else if (player) {
-                bestMove.value = Infinity;
-            }
-            else {
+            if (player) {
                 bestMove.value = -Infinity;
+            }
+            else if (!player) {
+                bestMove.value = +Infinity;
             }
 
             for (let index = 0; index < listAllActions(gameArrayCpy).length; index++) {
+                console.log("The index in the loop is " + index);
+                console.log(gameArrayCpy);
+                console.log("Current player: " + player);
                 const action = listAllActions(gameArrayCpy)[index];
                 // X is maximizer, resultOfAction also copies the array
                 const playerString = (player) ? 'X': 'O';
@@ -302,18 +306,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 const curScore = minimax(actionResult, depth - 1, !player);
 
                 if (player){
-                    if (curScore > bestMove.value){
-                        console.log ("found new best score for human: " + curScore)
-                        bestMove.value = curScore;
+                    if (curScore.value > bestMove.value){
+                        console.log ("found new best score for human: " + curScore.value)
+                        bestMove.value = curScore.value;
+                        bestMove.moveID = action;
                     }
                 }
-                else {
-                    if (curScore < bestMove.value){
-                        console.log ("found new best score for ai: " + curScore)
-                        bestMove.value = curScore;
+                else if (!player) {
+                    if (curScore.value < bestMove.value){
+                        console.log ("found new best score for ai: " + curScore.value)
+                        bestMove.value = curScore.value;
+                        bestMove.moveID = action;
                     }
                 }
             }
+            console.log("best ID is " + bestMove.moveID);
             return bestMove;
         };
 
@@ -403,11 +410,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     displayGameEnd();
                     
                     // calling minimax for 'O' player 2
+                    // console.log("before minimax call");
+                    // console.log(gameboard.array);
                         const minimaxResult = gameflow.minimax(gameboard.array, gameflow.listAllActions(gameboard.array).length, gameflow.sayWhoseTurn(gameboard.array));
+                        console.log(minimaxResult);
                         if (minimaxResult.moveID) {
                             if (!gameflow.checkGameOver(gameboard.array).gameOver) {
-                                gameboard.array[minimaxResult.charAt(0)][minimaxResult.charAt(1)] = gameflow.player2.sign;
-                                const aiCell = document.getElementById(minimaxResult);
+                                gameboard.array[minimaxResult.moveID.charAt(0)][minimaxResult.moveID.charAt(1)] = gameflow.player2.sign;
+                                const aiCell = document.getElementById(minimaxResult.moveID);
                                 aiCell.textContent = gameflow.player2.sign;
                                 aiCell.parentNode.className = 'cell';
                             }
