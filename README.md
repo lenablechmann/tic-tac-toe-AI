@@ -1,5 +1,8 @@
 # Tic Tac Toe Web-App
-A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and javascript module pattern.
+A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and javascript module pattern. Live version: https://lenablechmann.github.io/tic-tac-toe-AI/
+
+![Tic Tac Toe Starting Screen](images/ticTacToeStart.png)
+![Tic Tac Toe Starting Screen](images/ticTacToeEnd.png)
 
 ## Specification
 - create a tic tac toe game in javascript, html, css
@@ -9,6 +12,9 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - use CSS grid and flexbox for layout
 - avoid global namespace polution by using the revealing module pattern
 - if you need multiples of the same prototype, use factory functions
+
+## Architectural Overview of the Javascript file
+![Tic Tac Toe Architectural Overview](images/architecture.png)
 
 ## Project Road Map
 - [x] create a basic README layout, add folders and css reset file
@@ -22,7 +28,7 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - [x] program how the new round will be started after the win
 - [x] plan out the pseudocode for the AI (a separate module?)
 - [x] add the AI (if you dare)
-- [ ] add an architectural overview in form of a chart
+- [x] add an architectural overview in form of a chart
 
 ## Learning goals
 - practice planning and organizing projects from start to finish (top down or bottom up, which suits the situation better?)
@@ -36,9 +42,9 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - apply basic TDD (test driven development) concepts
 
 ## Unexpected Difficulties/Learning Experiences
-- minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses
-- implementing game states in code was also not trivial
-- jest testing builds upon exporting of JS modules, which clashes with the revealing module pattern. Atm I will prioritize using the module pattern, and manually export the functions into test files, since my goal with this project is to learn the revearing module pattern.
-- recursion with trees isn't as straightforward as it used to be with Fibonacci
+- minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses; Whcih in turn ate up more of the project's time than it was necessary
+- jest testing builds upon exporting of JS modules, which clashes with the revealing module pattern. Atm I will prioritize using the module pattern, and manually export the functions into test files. My goal with this project is to learn the revearing module pattern.
+- console.log + debugger; before return statements is an excellent combination for debugging recursion
+- the very first turn lags a bit, due to a bigger game tree. It can be improved upon by lowering the initial depth and/or adding alpha beta pruning, but as of now the current implementation is good enough
 
 
