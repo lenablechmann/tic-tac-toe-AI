@@ -263,6 +263,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // [TODO] minimax function: takes board as input, returns optimal move for the player or empty if game over
         function minimax(gameArray, depth, player) {
+            if (depth >= 8) {
+                depth = 7;
+            }
             // create a copy of the array
             let gameArrayCpy = gameArray.map(inner => inner.slice());
             // the goal of the gametree creation is to find the best move
@@ -289,7 +292,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             for (let index = 0; index < listAllActions(gameArrayCpy).length; index++) {
-                console.log("The index in the loop is " + index);
                 const action = listAllActions(gameArrayCpy)[index];
                 // X is maximizer, resultOfAction also copies the array
                 const playerString = (player) ? 'X': 'O';
@@ -299,20 +301,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (player){
                     if (curScore.value > bestMove.value){
-                        console.log ("found new best score for human: " + curScore.value)
                         bestMove.value = curScore.value;
                         bestMove.moveID = action;
                     }
                 }
                 else {
                     if (curScore.value < bestMove.value){
-                        console.log ("found new best score for ai: " + curScore.value)
                         bestMove.value = curScore.value;
                         bestMove.moveID = action;
                     }
                 }
             }
-            console.log("best ID is " + bestMove.moveID);
             return bestMove;
         };
 

@@ -45,6 +45,4 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses; Whcih in turn ate up more of the project's time than it was necessary
 - jest testing builds upon exporting of JS modules, which clashes with the revealing module pattern. Atm I will prioritize using the module pattern, and manually export the functions into test files. My goal with this project is to learn the revearing module pattern.
 - console.log + debugger; before return statements is an excellent combination for debugging recursion
-- the very first turn lags a bit, due to a bigger game tree. It can be improved upon by lowering the initial depth and/or adding alpha beta pruning, but as of now the current implementation is good enough
-
-
+- the very first turn lags a bit, due to a bigger game tree. It can be improved upon by lowering the initial depth and/or adding alpha beta pruning. Changed initial depth to aid the UX. 
