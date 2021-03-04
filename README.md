@@ -16,6 +16,15 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 ## Architectural Overview of the Javascript file
 ![Tic Tac Toe Architectural Overview](images/architecture.png)
 
+## Minimax Algorithm
+The minimax algorithm is being used in zero-sum games to choose the best possible moves (2 players, when one wins the other loses. Players know of the current game state at all times).
+
+Minimax assumes, that both players are playing optimally and are trying to win. 
+Part of the algorithm is creating the gametree with all possible moves and recursively going up every branch assigning and choosing the best game state for the player, whose turn it is.
+
+To somehow distinguish the players' goals from each other, one player strives to achieve a max positive value, while the other one is trying to achieve an as low value as possible. Tie/Draw is assigned the value of zero. Meaning both players are ok with a draw, but absolutely want to avoid losses. (Thus the algorithm will choose a "safe" draw tree, over a more "risky" winning tree).
+
+
 ## Project Road Map
 - [x] create a basic README layout, add folders and css reset file
 - [x] create a wireframe for the interface
@@ -40,6 +49,7 @@ A tic tac toe game written in HTML5/CSS3/Javascript using the minimax AI and jav
 - use emmet shortcuts to speed up your HTML composing
 - add unit tests with the jest framework to make the code more maintainable and avoid constant guesswork whenever bugs creep up
 - apply basic TDD (test driven development) concepts
+
 
 ## Unexpected Difficulties/Learning Experiences
 - minimax is pretty hard to understand if you don't understand graphs, so that led me down the graphs rabbit hole and AI articles + courses; Whcih in turn ate up more of the project's time than it was necessary
